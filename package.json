@@ -1,0 +1,32 @@
+{
+  "name": "louis-chua-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "wrangler dev --ip 127.0.0.1 --port 3000",
+    "typecheck": "tsc --noEmit",
+    "test": "node scripts/check-site.mjs",
+    "audit": "node scripts/lighthouse.mjs",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "framer-motion": "^12.0.0",
+    "next": "^15.5.24",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "lighthouse": "^13.4.1",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.0.0",
+    "wrangler": "^4.131.1"
+  }
+}
