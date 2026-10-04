@@ -52,6 +52,8 @@ h2 { font-size: clamp(34px, 4.2vw, 61px); letter-spacing: -.055em; font-weight: 
 .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 65px 30px; }
 .project-0, .project-1, .project-2 { grid-column: 1 / -1; }
 .project-link { display: block; }
+.scroll-artwork, .scroll-artwork-layer { position: absolute; inset: 0; }
+.scroll-progress { position: fixed; inset: 0 0 auto; height: 2px; background: var(--accent); transform-origin: left; transform: scaleX(0); z-index: 30; pointer-events: none; }
 .project-cover { height: 330px; overflow: hidden; position: relative; background: #1a1d21; border-radius: 4px; isolation: isolate; transition: background 300ms ease-out; }
 .project-0 .project-cover, .project-1 .project-cover, .project-2 .project-cover { height: 430px; }
 .cover-caption { position: absolute; left: 28px; top: 26px; color: #c0c3c8; font-size: 9px; z-index: 2; }
@@ -312,6 +314,8 @@ h2 { font-size: clamp(34px, 4.2vw, 61px); letter-spacing: -.055em; font-weight: 
   .next-project { padding-bottom: 45px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .scroll-artwork-layer { transform: none !important; }
+  .scroll-progress { display: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

@@ -10,4 +10,6 @@ Content sources: supplied DOCX/PDF, conversation, user-linked repository READMEs
 
 Checks: production build and typecheck; browser at 360, 768, 1440 and wide desktop; keyboard navigation, case studies, PDF download, 404, no-JS visibility, reduced motion, console errors; mobile/desktop Lighthouse.
 
+Scroll-linked motion: project artwork moves through a 76px vertical range and gently scales as the cover crosses the viewport, reversing naturally on upward scrolling. Labels and hit targets remain stationary. A 2px reading-progress line follows document scroll. Both effects disable for reduced motion; native scrolling stays unchanged.
+
 Motion update: short, staggered hero and case-study entrances; 400ms scroll reveals with artwork settling; 250–350ms hover feedback for links and individual cover artwork; 100ms button press feedback. Transform and opacity carry movement without layout shifts. Hover movement is limited to fine pointers, all content is visible without JavaScript, and changing reduced-motion preferences cancels active reveal animations. References: https://motion.dev/docs/react-gestures and https://mcpmarket.com/tools/skills/web-animation-design.

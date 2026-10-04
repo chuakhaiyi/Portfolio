@@ -41,6 +41,18 @@ try {
   await page.getByRole('link', { name: 'Back to home' }).click();
   await page.waitForURL(baseURL + '/');
   await page.emulateMedia({ reducedMotion: 'no-preference' });
+  const artwork = page.locator('.cover-formpilot .scroll-artwork-layer');
+  await page.evaluate(() => window.scrollTo({ top: 650, behavior: 'instant' }));
+  await page.waitForFunction(() => {
+    const el = document.querySelector('.cover-formpilot .scroll-artwork-layer');
+    return el && getComputedStyle(el).transform !== 'none';
+  });
+  const beforeScroll = await artwork.evaluate(el => getComputedStyle(el).transform);
+  await page.evaluate(() => window.scrollTo({ top: 1000, behavior: 'instant' }));
+  await page.waitForFunction(previous => getComputedStyle(document.querySelector('.cover-formpilot .scroll-artwork-layer')).transform !== previous, beforeScroll);
+  assert(await page.locator('.scroll-progress').isVisible());
+  await page.evaluate(() => window.scrollTo({ top: 650, behavior: 'instant' }));
+  await page.waitForFunction(previous => getComputedStyle(document.querySelector('.cover-formpilot .scroll-artwork-layer')).transform === previous, beforeScroll);
   const button = page.locator('.hero-actions .button');
   await button.hover();
   await page.waitForFunction(() => getComputedStyle(document.querySelector('.hero-actions .button')).transform.includes('-3'));
@@ -56,6 +68,8 @@ try {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.waitForFunction(() => document.getAnimations().filter(a => a.playState === 'running').length === 0);
   assert.equal(await card.locator('.chapter-art').evaluate(el => getComputedStyle(el).transform), 'none');
+  assert.equal(await artwork.evaluate(el => getComputedStyle(el).transform), 'none');
+  assert.equal(await page.locator('.scroll-progress').isVisible(), false);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload({ waitUntil: 'networkidle' });
   assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'auto');

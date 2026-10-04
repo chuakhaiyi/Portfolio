@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Header, Footer } from "@/components/chrome";
+import { ScrollProgress } from "@/components/motion";
 import "./globals.css";
 
 const inter = localFont({ src: "../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2", display: "swap", variable: "--font-inter" });
@@ -13,5 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en" className={inter.variable}><body><Header />{children}<Footer /></body></html>;
+  return <html lang="en" className={inter.variable}><body><ScrollProgress /><Header />{children}<Footer /></body></html>;
 }
