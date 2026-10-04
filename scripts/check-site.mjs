@@ -8,6 +8,15 @@ await mkdir('tmp/browser', { recursive: true });
 const errors = [];
 try {
   const page = await browser.newPage();
+  await page.addInitScript(() => {
+    window.revealedSections = [];
+    const animate = Element.prototype.animate;
+    Element.prototype.animate = function (...args) {
+      const heading = this.querySelector('h2');
+      if (heading) window.revealedSections.push(heading.textContent);
+      return animate.apply(this, args);
+    };
+  });
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
   for (const width of [360, 768, 1440, 1920]) {
@@ -27,9 +36,14 @@ try {
     console.log(`PASS: home and FormPilot layout at ${width}px`);
   }
   for (const slug of ['queuesense', 'formpilot', 'ledge', 'suiroll', 'medisync', 'intelligent-cpd', 'nextchapter']) {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
     const response = await page.goto(`${baseURL}/work/${slug}`, { waitUntil: 'networkidle' });
     assert.equal(response.status(), 200);
     assert(await page.getByRole('heading', { name: 'My contribution' }).isVisible());
+    await page.getByRole('heading', { name: 'My contribution' }).scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => window.revealedSections.includes('My contribution'));
+    await page.getByRole('heading', { name: 'The challenge' }).scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => window.revealedSections.includes('The challenge'));
   }
   const pdf = await page.request.get(`${baseURL}/Louis_Chua_Khai_Yi_Resume.pdf`);
   assert.equal(pdf.status(), 200);
